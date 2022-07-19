@@ -1,0 +1,224 @@
+<html>
+  <script type="text/javascript">
+    function switchstatus(){
+theUrl='https://lower-hockey-36731.herokuapp.com/https://smart-farming-server.herokuapp.com/retrievestatus?query=on'
+axios.get(theUrl)
+        .then(response => {
+        result=response.data;
+          if(result['switch1']===true)
+          {document.getElementById('1').value='ON';
+          }
+          if(result['switch1']===false)
+          {document.getElementById('1').value='OFF';}
+          if(result['switch2']===true)
+          {document.getElementById('2').value='ON';
+          }
+          if(result['switch2']===false)
+          {document.getElementById('2').value='OFF';}
+        }).catch(error => console.error(error));
+}
+
+</script>
+<script>
+  window.onload = function () {
+  
+  var dps = []; var dps2=[];var dps3=[]; // dataPoints
+  var chart = new CanvasJS.Chart("chartContainer", {
+    title :{
+      text: "Temperature"
+    },
+    data: [{
+      type: "line",
+      dataPoints: dps
+    }]
+  });
+  var chart2 = new CanvasJS.Chart("chartContainer2", {
+    title :{
+      text: "Humidity"
+    },
+    data: [{
+      type: "line",
+      dataPoints: dps2
+    }]
+  });
+  var chart3 = new CanvasJS.Chart("chartContainer3", {
+    title :{
+      text: "Soil Moisture"
+    },
+    data: [{
+      type: "line",
+      dataPoints: dps3
+    }]
+  });
+  
+  var xVal = 0;
+  var yVal = 100; 
+  var updateInterval = 30*1*1000;
+  var dataLength = 10; // number of dataPoints visible at any point
+  var k=0;
+  var updateChart = function (count) {
+  
+    count = count || 1;
+  
+    
+      url2='https://lower-hockey-36731.herokuapp.com/https://smart-farming-server.herokuapp.com/retrieve_data?query=ok'
+
+      axios.get(url2)
+        .then(response => {
+        result=response.data;
+        for (var j = 0; j < count; j++) {
+      //temperature
+        yVal=Number(result[j][1]);
+        
+        dps.push({
+        x: xVal,
+        y: yVal
+      });
+      // humidity
+      yVal=Number(result[j][2]);
+        
+        dps2.push({
+        x: xVal,
+        y: yVal
+      });
+      // moisture
+        yVal=Number(result[j][3]);
+        
+        dps3.push({
+        x: xVal,
+        y: yVal
+      });
+      
+        xVal++;
+      }
+        if (dps.length > dataLength) {
+      dps.shift();
+    }
+    if (dps2.length > dataLength) {
+      dps2.shift();
+    }
+    if (dps3.length > dataLength) {
+      dps3.shift();
+    }
+  
+  
+    chart.render();
+    chart2.render();
+    chart3.render();
+        }).catch(error => console.error(error));
+       
+  };
+  
+  updateChart(dataLength);
+    setInterval(function(){updateChart()}, updateInterval);
+  }
+  </script>
+
+<head>
+<center>
+  <h1><b>Smart Farming</b></h1>
+   
+</center>
+<style>
+code {
+  font-family: Consolas,"courier new";
+  color: crimson;
+  background-color: #f1f1f1;
+  padding: 2px;
+  font-size: 105%;
+}
+</style>
+</head>
+
+<body>
+  <h2>
+    <form>
+      <input type="button" id="load" value="refresh" style="color:blue"
+         onclick="switchstatus();" >
+  </form>
+  </h2>
+
+</body>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script type="text/javascript">
+function toggle(button)
+{
+  if(document.getElementById("1").value=="OFF"){
+   document.getElementById("1").value="ON";
+   theUrl='https://lower-hockey-36731.herokuapp.com/https://smart-farming-server.herokuapp.com/switch1?query=on'
+   var xmlHttp = new XMLHttpRequest();
+   xmlHttp.open( "GET", theUrl, false );
+   xmlHttp.send();}
+
+  else if(document.getElementById("1").value=="ON"){
+   document.getElementById("1").value="OFF";
+   theUrl='https://lower-hockey-36731.herokuapp.com/https://smart-farming-server.herokuapp.com/switch1?query=off'
+   var xmlHttp = new XMLHttpRequest();
+   xmlHttp.open( "GET", theUrl, false );
+    xmlHttp.send();}
+}
+</script>
+<body>
+  <h2>
+
+    <p><code>Motor 1</code></p>
+<form action="">
+<input type="button" id="1" value="ON" style="color:blue"
+       onclick="toggle(this);">
+
+</form>
+  </h2>
+
+
+</body>
+
+<script type="text/javascript">
+
+function toggle2(button)
+{
+  if(document.getElementById("2").value=="OFF"){
+   document.getElementById("2").value="ON";
+   theUrl='https://lower-hockey-36731.herokuapp.com/https://smart-farming-server.herokuapp.com/switch2?query=on'
+   var xmlHttp = new XMLHttpRequest();
+   xmlHttp.open( "GET", theUrl, false );
+   xmlHttp.send(null);
+
+   }
+
+  else if(document.getElementById("2").value=="ON"){
+   document.getElementById("2").value="OFF";
+   theUrl='https://lower-hockey-36731.herokuapp.com/https://smart-farming-server.herokuapp.com/switch2?query=off'
+   var xmlHttp = new XMLHttpRequest();
+   xmlHttp.open( "GET", theUrl, false );
+   xmlHttp.send(null);
+   }
+}
+</script>
+<h2>
+  <p><code>Motor 2</code></p>
+  <form action="">
+  <input type="button" id="2" value="ON" style="color:blue"
+         onclick="toggle2(this);"> 
+  </form>
+
+</h2>
+
+<center>
+<div id="chartContainer" style="height: 370px; width:33%; float: left;"></div>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+<div id="chartContainer2" style="height: 370px; width:33%; float: left;"></div>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+<div id="chartContainer3" style="height: 370px; width:33%; float: left;"></div>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+</center>
+
+<body>
+
+
+  
+
+</body>
+</html>
