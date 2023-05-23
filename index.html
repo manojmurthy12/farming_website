@@ -1,7 +1,7 @@
 <html>
   <script type="text/javascript">
     function switchstatus(){
-theUrl='https://flask-production-8b8c.up.railway.app/retrievestatus'
+theUrl='https://farming.up.railway.app/retrievestatus'
 axios.get(theUrl)
         .then(response => {
         result=response.data;
@@ -61,7 +61,7 @@ axios.get(theUrl)
     count = count || 1;
   
     
-      url2='https://flask-production-8b8c.up.railway.app/retrieve_data'
+      url2='https://farming.up.railway.app/retrieve_data'
 
       axios.get(url2)
         .then(response => {
@@ -146,14 +146,14 @@ function toggle(button)
 {
   if(document.getElementById("1").value=="OFF"){
    document.getElementById("1").value="ON";
-   theUrl='https://flask-production-8b8c.up.railway.app/switch1?query=on'
+   theUrl='https://farming.up.railway.app/switch1?query=on'
    var xmlHttp = new XMLHttpRequest();
    xmlHttp.open( "GET", theUrl, false );
    xmlHttp.send();}
 
   else if(document.getElementById("1").value=="ON"){
    document.getElementById("1").value="OFF";
-   theUrl='https://flask-production-8b8c.up.railway.app/switch1?query=off'
+   theUrl='https://farming.up.railway.app/switch1?query=off'
    var xmlHttp = new XMLHttpRequest();
    xmlHttp.open( "GET", theUrl, false );
     xmlHttp.send();}
@@ -179,7 +179,7 @@ function toggle2(button)
 {
   if(document.getElementById("2").value=="OFF"){
    document.getElementById("2").value="ON";
-   theUrl='https://flask-production-8b8c.up.railway.app/switch2?query=on'
+   theUrl='https://farming.up.railway.app/switch2?query=on'
    var xmlHttp = new XMLHttpRequest();
    xmlHttp.open( "GET", theUrl, false );
    xmlHttp.send(null);
@@ -188,7 +188,7 @@ function toggle2(button)
 
   else if(document.getElementById("2").value=="ON"){
    document.getElementById("2").value="OFF";
-   theUrl='https://flask-production-8b8c.up.railway.app/switch2?query=off'
+   theUrl='https://farming.up.railway.app/switch2?query=off'
    var xmlHttp = new XMLHttpRequest();
    xmlHttp.open( "GET", theUrl, false );
    xmlHttp.send(null);
